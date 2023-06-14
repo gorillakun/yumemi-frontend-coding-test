@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 
 import Checkbox from './components/Checkbox';
+import Chart from './components/Chart';
 
 
 const queryClient = new QueryClient();
@@ -19,6 +20,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
       <Checkbox />
       </QueryClientProvider>
+      <Chart />
       <div>
         <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
           <img src={viteLogo} className="logo" alt="Vite logo" />

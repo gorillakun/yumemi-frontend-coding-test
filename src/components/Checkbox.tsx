@@ -1,5 +1,6 @@
+import { useEffect, useState } from 'react';
 import {fetchPrefectures} from '../api/index';
-import { useQuery} from "react-query";
+//import { useQuery} from "react-query";
 
 type Prefecture = {
   prefCode: number,
@@ -7,10 +8,20 @@ type Prefecture = {
 }
 
 const Checkbox = () => {
+  const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
 
-  const {isLoading, isError, data } = useQuery(['prefectures'], fetchPrefectures);
+  useEffect(() => {
+    async function fetchData() {
+      const resp = await fetchPrefectures();
+      setPrefectures(resp.result);
+      return resp;
+    }
+    fetchData();
+  }, []);
+
+  /*const {isLoading, isError, data } = useQuery(['prefectures'], fetchPrefectures);
   const prefectures: Prefecture[] = data.result;
-  console.debug(data);
+  console.debug(data);*/
 
   return (
     <>
