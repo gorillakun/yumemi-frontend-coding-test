@@ -11,3 +11,14 @@ export const fetchPrefectures = async ()=> {
   });
   return response.json();
 }
+
+
+export const fetchPopulations = async (params: any)=> {
+  const query = new URLSearchParams(params);
+  const response = await fetch(END_POINT_BASE + "api/v1/population/composition/perYear?" + query, {
+    headers: {
+      'x-api-key': API_KEY
+    }
+  });
+  return response.json();
+}

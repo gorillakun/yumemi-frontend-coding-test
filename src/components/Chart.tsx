@@ -9,6 +9,15 @@ import {
   YAxis,
 } from 'recharts';
 
+import { fetchPopulations } from '../api/index';
+import { useEffect, useState } from 'react';
+
+type Population = {
+  year: number,
+  value: number
+}
+
+
 const data = [
   {
     name: 'Page A',
@@ -55,6 +64,23 @@ const data = [
 ];
 
 const Chart = () => {
+
+  const [populations, setPopulations] = useState<Population[]>([]);
+
+  useEffect(()=>{
+    const param = {
+      cityCode: 11362,
+      prefCode: 11
+    }
+    async function fetchData(param) {
+      const response = await fetchPopulations(param);
+      setPopulations(response.result.data);
+      console.log(populations)
+    }
+    fetchData(param);
+  }, []);
+
+
   return(
     <>
       <LineChart
