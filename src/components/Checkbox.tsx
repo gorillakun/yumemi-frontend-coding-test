@@ -4,7 +4,8 @@ import {fetchPrefectures} from '../api/index';
 
 type Prefecture = {
   prefCode: number,
-  prefName: string
+  prefName: string,
+  isCheck: boolean
 }
 
 const Checkbox = () => {
@@ -27,7 +28,7 @@ const Checkbox = () => {
     <>
       {prefectures.map((prefecture) => (
         <label key={prefecture.prefCode}>
-          <input value={prefecture.prefName} type="checkbox" />
+          <input value={prefecture.prefName} type="checkbox" checked={prefecture.isCheck} />
           {prefecture.prefName}
         </label>
       ))}

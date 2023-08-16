@@ -69,16 +69,16 @@ const Chart = () => {
 
   useEffect(()=>{
     const param = {
-      cityCode: 11362,
       prefCode: 11
     }
-    async function fetchData(param) {
+    async function fetchData() {
       const response = await fetchPopulations(param);
-      setPopulations(response.result.data);
-      console.log(populations)
+      const result = response.result.data[0].data;
+      setPopulations(result);
     }
-    fetchData(param);
+    fetchData();
   }, []);
+  console.log(populations);
 
 
   return(
@@ -86,7 +86,7 @@ const Chart = () => {
       <LineChart
         width={700}
         height={300}
-        data={data}
+        data={populations}
         margin={{
           top: 5,
           right: 5,
@@ -95,12 +95,11 @@ const Chart = () => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
+        <XAxis dataKey="year" />
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+        <Line type="monotone" dataKey="value" stroke="#82ca9d" activeDot={{ r: 8 }} />
       </LineChart>
     </>
   );
