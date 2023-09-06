@@ -12,15 +12,32 @@ import Chart from './components/Chart';
 
 const queryClient = new QueryClient();
 
+
+type Prefecture = {
+  prefCode: number,
+  prefName: string,
+  isCheck: boolean
+}
+
+
 function App() {
   const [count, setCount] = useState(0);
 
+  const checkedPrefectures: Prefecture[] = [
+    {prefCode: 11,
+      prefName: '滋賀県',
+      isCheck: true},
+    {prefCode: 12,
+      prefName: '東京都',
+      isCheck: true}
+  ];
   return (
     <>
       <QueryClientProvider client={queryClient}>
       <Checkbox />
       </QueryClientProvider>
-      <Chart />
+
+      <Chart checkedPrefectures={checkedPrefectures} hoge={true} name="ほげ"/>
       <div>
         <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
           <img src={viteLogo} className="logo" alt="Vite logo" />
