@@ -23,24 +23,28 @@ type Prefecture = {
   isCheck: boolean
 }
 
-const Chart: FC<{checkedPrefectures: Prefecture[], hoge:boolean, name:string}> = ({checkedPrefectures, hoge, name}) => {
-  console.log(typeof checkedPrefectures);
-  console.log(typeof hoge);
-  console.log(typeof name);
+const Chart: FC<{checkedPrefectures: Prefecture[]}> = ({checkedPrefectures}) => {
+
   const [populations, setPopulations] = useState<Population[]>([]);
 
   useEffect(()=>{
-    console.log(checkedPrefectures[0].prefCode);
-    const param = {
-      prefCode: checkedPrefectures[0].prefCode
-    }
+
     async function fetchData() {
-      const response = await fetchPopulations(param);
-      const result = response.result.data[0].data;
-      setPopulations(result);
+      const promisses =  checkedPrefectures.map(
+        async (checkedPrefecture: Prefecture)=>{
+          const param = {
+            prefCode: checkedPrefecture.prefCode
+          }
+          const response = await fetchPopulations(param);
+          const result = response.result.data[0].data;
+          return result;
+      });
+      const results: Population[] = await Promise.all(promisses);
+      setPopulations(results);
     }
     fetchData();
   }, []);
+
   console.log(populations);
 
 
@@ -49,7 +53,6 @@ const Chart: FC<{checkedPrefectures: Prefecture[], hoge:boolean, name:string}> =
       <LineChart
         width={700}
         height={300}
-        data={populations}
         margin={{
           top: 5,
           right: 5,
@@ -59,10 +62,12 @@ const Chart: FC<{checkedPrefectures: Prefecture[], hoge:boolean, name:string}> =
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="year" />
-        <YAxis />
+        <YAxis dataKey="value"/>
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="value" stroke="#82ca9d" activeDot={{ r: 8 }} />
+        {populations.map((population, index) => (
+          <Line type="monotone" key={`population-${index}`} dataKey="value" data={population} name={`population-${index}`} stroke="#82ca9d" activeDot={{ r: 8 }} />
+        ))}
       </LineChart>
     </>
   );
