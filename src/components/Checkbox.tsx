@@ -20,14 +20,28 @@ const Checkbox: FC<{checkedPrefectures: Prefecture[], setCheckedPrefectures: Dis
     }
     fetchData();
   }, []);
-  
+
+  const updateCheckedPrefectures = (targetPrefecture: Prefecture) => {
+    const newCheckedPrefectures = Object.values(checkedPrefectures).map((pref: Prefecture) => {
+      if(pref.prefCode === targetPrefecture.prefCode) {
+        return pref;
+      } else {
+        return targetPrefecture;
+      }
+    });
+
+    setCheckedPrefectures(newCheckedPrefectures);
+  }
+
+
   const handleChange = (e) => {
-    const targetPrefKey: number = e.target.key;
-    if(e.target.cheked) {
-      setCheckedPrefectures([...checkedPrefectures, {prefCode: e.target.key}]);
-      
+    const targetPrefecture: Prefecture = {
+      prefCode: e.target.key,
+      prefName: e.target.value,
+      isCheck: true
     }
-    
+    //setCheckedPrefectures((prevState: Prefecture) => ({...prevState, prefCode: e.target.key}));
+    updateCheckedPrefectures(targetPrefecture);
   }
   /*const {isLoading, isError, data } = useQuery(['prefectures'], fetchPrefectures);
   const prefectures: Prefecture[] = data.result;
@@ -37,9 +51,10 @@ const Checkbox: FC<{checkedPrefectures: Prefecture[], setCheckedPrefectures: Dis
     <>
       {prefectures.map((prefecture) => (
         <label key={prefecture.prefCode}>
-          <input value={prefecture.prefName} 
+          <input value={prefecture.prefName}
             type="checkbox"
-            checked={prefecture.isCheck} />
+            checked={prefecture.isCheck}
+            onChange={handleChange} />
           {prefecture.prefName}
         </label>
       ))}
